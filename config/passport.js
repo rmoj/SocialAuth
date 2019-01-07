@@ -379,7 +379,7 @@ module.exports = function (passport) {
         // scope: ['user: email'],
         callbackURL: configAuth.githubAuth.callbackURL
     },
-        function (accessToken, refreshToken, profile, done) {
+        function (token, refreshToken, profile, done) {
             process.nextTick(function () {
 
                 User.findOne({ 'github.id': profile.id }, function (err, user) {
@@ -392,6 +392,7 @@ module.exports = function (passport) {
                             user.github.token = token;
                             user.github.username = profile.username;
                             user.github.displayName = profile.displayName;
+                            user.github.email = profile.email;
 
                             user.save(function (err) {
                                 if (err)
@@ -410,6 +411,7 @@ module.exports = function (passport) {
                         newUser.github.token = token;
                         newUser.github.username = profile.username;
                         newUser.github.displayName = profile.displayName;
+                        newUser.github.email = profile.email;
 
                         newUser.save(function (err) {
                             if (err)
